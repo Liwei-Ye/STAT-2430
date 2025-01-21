@@ -103,7 +103,7 @@ q1.3
 
 Write 1 sentence that describes what you see (or do not see)  in your plot [1 pt]
 -->
-The most of the penguins Bill Length that around 40 - 50 mm, their Bill Depth within interval of 12.5 - 18.75 mm
+The plot shows there are three distinct clustering patterns based on the penguins' bill length and depth, and the most of the penguins Bill Length that around 40 - 50 mm, their Bill Depth within interval of 12.5 - 18.75 mm
 
 ### Step 2 (2 pts)
 
