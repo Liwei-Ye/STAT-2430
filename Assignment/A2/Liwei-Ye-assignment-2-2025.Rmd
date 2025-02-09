@@ -1,0 +1,185 @@
+---
+title: "Assignment 2"
+author: "Liwei Ye - B00907975"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+There are so many packages and functions to make visualizations, that its really important to be able to read documentation and learn new functions. Fortunately, the design of ggplot means that many functions work very similarly and so once you have learned the basics, it’s quite easy to learn more on your own.
+
+The purpose of this assignment is for you to practice this sort of learning. I’ve picked out a few functions that work much like the examples we’ve looked at already. Your assignment is to pick out one from each question below and show how it works in this R markdown document. This is the sort of practice I do all the time when I learn a new R skill.
+
+For each question below, pick **one** of the functions and demonstrate how the function works by creating an example. I describe briefly what the function or package does and provide a link to documentation or a tutorial which I think will help you learn to use the functions.  Do not simply copy examples from these (or any other) web pages or documentation. Instead, adapt the examples to create your own example. 
+
+You will need to install packages to access some of these files. Include the appropriate `library` function in this .Rmd document. Do **not** include the code to install the package. (I sometimes write the code to install the package, but put a `#` mark at the start of the line of code to mark it as a comment so it is not executed when I knit the document.) This is because you need to use the `library` function each time you use a package, but you only need to install it once.
+
+## Question 1 (3 marks)
+
+Create a visualization that uses **one** of the three following functions:
+
+* The `ggrepel` package provides the geoms `geom_text_repel` and `geom_label_repel` which add labels that do not overlap and are placed near data points or are connected to points with lines. See the [vignette](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html).
+
+* The `ggtext` package allows you to add colour, italics, bold, and other formatting using markdown and other formatting markup. [Documentation](https://github.com/wilkelab/ggtext).
+
+* The function `expression` makes it possible to add mathematical expressions to text elements in a plot. This function is in the package `base` which is always installed and always loaded, so you don't need a `library` function call. You can find examples  in [this tutorial](https://www.benjaminackerman.com/post/2019-03-08-equation_labels/) and the help page for [plotmath](https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/plotmath).
+
+```{r}
+# Load Pacakges
+# install.packages("ggplot2")
+# install.packages("ggtext")
+library(ggplot2)
+library(ggtext)
+library(palmerpenguins)
+```
+
+```{r}
+# Structure Data
+str(penguins)
+```
+
+```{r}
+# create your visualization here
+# ?ggtext
+
+ggplot(
+  data = na.omit(palmerpenguins::penguins),  
+  mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species, shape = island)) +
+  geom_point(alpha = 0.8) +
+  labs(title = "The Relationship of Bill length & depth, Habitat and Speicies",
+       x = "Bill Length (mm)",
+       y = "Bill Depth (mm)"
+       ) +
+  theme(
+    plot.title = element_textbox_simple(fill = "lightgray", 
+                                        color = "black", 
+                                        halign = 0.5,
+                                        margin = unit(c(10, 0, 20, 0), "pt"),
+                                        padding = unit(c(20, 0, 20, 0), "pt"),
+                                        r = unit(5, "pt"),
+                                        linetype = 1
+                                        ), 
+    
+    axis.title.x = element_textbox_simple(fill = "lightblue",
+                                          color = "black", 
+                                          halign = 0.5,
+                                          margin = unit(c(10, 0, 10, 0), "pt"),
+                                          padding = unit(c(20, 0, 20, 0), "pt"),
+                                          r = unit(3, "pt")
+                                          ),
+    
+    axis.title.y = element_textbox_simple(fill = "lightgreen",
+                                          color = "black",
+                                          halign = 0.5,
+                                          width = unit(100, "pt"),
+                                          margin = unit(c(0, 10, 0, 10), "pt"),
+                                          padding = margin(20, 10, 20, 10),
+                                          r = unit(3, "pt")
+                                          )
+  )
+```
+
+**Explain in a sentence or two what your example does and how to use the function.**
+
+```{}
+"ggtext" allowing improve text rendering for "ggplot2". I used "element_textbox_simple" to style title, x and y labels for the plot. I can edit their background, color, margin, padding, and box radius similar to CSS for HTML.
+```
+
+
+## Question 2 (3 marks)
+
+Create a visualization that uses **one** of the three following functions. These are alternatives to boxplots, histograms, or points and error bars (from `stat_summary`)
+
+* Use `geom_violin` to show the distribution of data. (This is part of the tidyverse; there is nothing to install.) [Documentation](https://ggplot2.tidyverse.org/reference/geom_violin.html)
+
+* Show uncertainty in a set of data using `stat_eye`, `stat_histinterval`, `stat_gradientinterval` or similar functions from package `ggdist`.
+[Documentation](https://cran.r-project.org/web/packages/ggdist/vignettes/slabinterval.html)
+
+* Show the distribution of data using either `geom_density` or `stat_ecdf` as an alternative to `geom_histogram`. (These are both part of the tidyverse and documented [here](https://ggplot2.tidyverse.org/reference/stat_ecdf.html) and [here](https://ggplot2.tidyverse.org/reference/geom_density.html))
+
+```{r}
+# Create your visualization here
+ggplot(
+  data = na.omit(penguins),  
+  mapping = aes(x = bill_length_mm, fill = species)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Density Distribution of Bill Length by Species",
+       x = "Bill Length (mm)",
+       y = "Density")
+```
+
+
+**Write a couple of sentences that describes the meaning of your visualization and how you interpret the graphical display.**
+
+
+```{}
+The "X-axis" refers to the Bill Length, and the "Y-axis" refers to the Density. This plot shows the density distribution of Bill Length for three penguin species (Adelie, Chinstrap, Gentoo). The highest density represents that most penguins have a Bill Length within that referred value. It shows most Adelie penguins have a Bill Length of around 37 - 40mm. Most Chinstrap penguins have a Bill Length of around 50 - 52mm. Most Gentoo penguins have a Bill Length of around 45 - 50mm.
+```
+
+
+## Question 3 (3 marks)
+
+These are more complex functions, so your goal should be simply to replicate an example from the documentation. Pick **one** of the two functions below, find an example, write code to repeat the example below and describe what visualization your code creates. 
+
+* Make an animated plot using package `gganimate` and its [documentation](https://gganimate.com/articles/gganimate.html). This builds directly on ggplot, creating new asthestics to describe animated changes over time.
+
+
+**Describe what your example does here. Make specific links between your code and the visualization.**
+
+
+* Make a 3d scatterplot using package `plotly` ([Documentation](https://plotly.com/r/3d-scatter-plots/)). This is a very different plotting package and style compared to `ggplot`.
+
+**Describe what your example does here. Make specific links between your code and the visualization.**
+```{r}
+# Load Packages
+# install.packages("plotly")
+library(plotly)
+
+# Plot
+plot_ly(
+  data = na.omit(penguins),
+  x = ~bill_length_mm,
+  y = ~bill_depth_mm,
+  z = ~flipper_length_mm,
+  color = ~species,
+  symbol = ~island,
+  marker = list(size = ~body_mass_g / 1000, opacity = 0.8),
+  type = "scatter3d",
+  mode = "markers"
+) %>% 
+layout(
+  title = "3D Scatter Plot of Penguin Data",
+  scene = list(xaxis = list(title = "Bill Length (mm)"),
+               yaxis = list(title = "Bill Depth (mm)"),
+               zaxis = list(title = "Flipper Length (mm)")
+  )
+)
+```
+
+```{}
+"data = na.omit(penguins)": Data used for plotting
+"x = ~bill_length_mm": The "X-Axis" refers the Bill Length (mm)
+"y = ~bill_depth_mm": The "Y-Axis" refers the Bill Depth (mm)
+"z = ~flipper_length_mm": The Z-Axis referes the Flipper Length (mm)
+"color = ~species": Different colour used for different penguin species
+"symbol = ~island": Different symbol used for different penguins' habitat
+"marker = list(size = ~body_mass_g / 1000, opacity = 0.8)": Setting size of each point refers to penguin's "body_mass_g" divided by 1000; Setting opacity of each point be 0.8
+"type = "scatter3d",mode = "markers" ": 3D Scatter Plot with points only
+"layout()": Setting title and labels for the graph
+```
+
+If you use gganimate, not that for some systems the plot may not work in your knitted document, but it should work in the Rstudio environment. That is OK.
+
+## Knit and submit (1 mark)
+
+When you are done knit your document to pdf to be sure that all the code works without errors.
+
+Then upload your Rmd file and knitted pdf file to BS.
+
+
+
+
